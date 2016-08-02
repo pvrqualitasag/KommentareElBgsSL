@@ -1,0 +1,223 @@
+---
+output:
+  pdf_document:
+    includes:
+      in_header: tex/header.tex
+    fig_caption: false
+  word_document: default
+---
+
+```{r DocumentSetup, echo=FALSE, results='hide', include=FALSE}
+### # specify knitr options
+knitr::opts_chunk$set(echo = FALSE, results = 'asis')
+```
+```{r SectionCounterAndAbrTable}
+### # initialize section counter
+robjSecEnum <- rqudocuhelper::SectionEnumerator$new()
+r6ob_abbrtable <- rmddochelper::R6ClassTableAbbrev$new()
+```
+
+
+![Qualitas Logo](png/QualitasLogo.png)
+
+\fcolorbox{black}{white}{
+	\parbox[t]{1.0\linewidth}{
+		\centering \fontsize{12pt}{20pt}\selectfont % 
+		\vspace*{0.5cm} % 
+
+		\hfill Kommentar
+
+		\vspace*{0.5cm} 
+	}
+}
+
+\vspace*{0.5cm}
+
+\fcolorbox{black}{white}{
+	\parbox[t]{1.0\linewidth}{
+		\centering \fontsize{25pt}{40pt}\selectfont %
+		\vspace*{0.7cm}
+    Kommentare zum Projektvorschlag    \\
+    Elektronischer BGS    \\
+    von Simon Langenegger    \\
+
+		\vspace*{0.7cm} % Space between the end of the title and the bottom of the grey box
+	}
+}
+
+\vspace*{1cm}
+
+\begin{center}
+\includegraphics[width=0.5\textwidth]{png/Pedigree.png}
+\end{center}
+
+\vspace{5ex}
+{\centering \small
+\hfill
+\begin{tabular}{l}
+Peter von Rohr                      \\
+FB EDV, Qualitas AG                 \\
+Chamerstrasse 56, CH-6300 Zug       \\
+\verb+http://www.qualitasag.ch+     \\
+\verb+peter.vonrohr@qualitasag.ch+  
+\end{tabular}
+}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+```{r DocuStatusTable}
+r6obj_docstat <- rmddochelper::R6ClassDocuStatus$new()
+r6obj_docstat$set_current_status(psVersion = "0.0.901",
+                                 psStatus  = "Erstellung",
+                                 psProject = "eBgs")
+
+r6obj_docstat$include_doc_stat(psTitle = "## Status des Dokuments")
+```
+
+\pagebreak
+
+
+## Erklärung
+Dieses Dokument ist eine Sammlung von Kommentaren zum Entwurf des Projekts `r r6ob_abbrtable$add_abbrev(psAbbrev = "eBGS", psMeaning = "elektronischer Begleitschein")`  von `r r6ob_abbrtable$add_abbrev(psAbbrev = "sla", psMeaning = "Simon Langenegger")`. Die Kommentare basieren auf der Version der Projektbeschreibung, welche am 18.07.2016 von sla versendet wurde und mir von `r r6ob_abbrtable$add_abbrev(psAbbrev = "sgo", psMeaning = "Sarah Görlich")` weitergeleitet wurde.
+
+In einem ersten Abschnitt fasse ich das Projekt von sla zusammen, so wie ich das verstanden habe. Anschliessend werde ich meine Fragen und Kommentare formulieren.
+
+Zusätzliche Erklärungen werden in geschweifte Klammern {} gesetzt.
+
+
+## Zusammenfassung des Projektes
+Das Projekt trägt den Titel `Alternativer Lösungsansatz für Automatisierte Datenübertragung MLP`. Für die Kommentare in diesem Dokument wird der abgekürzte Arbeitstitel `eBGS` verwendet. 
+
+### Ausgangslage
+```{r AbbrevASR}
+r6ob_abbrtable$add_abbrev(psAbbrev = "ASR", psMeaning = "Arbeitsgemeinschaft Schweizerischer Rinderzüchter", pbQuote=FALSE, pbOut=FALSE)
+```
+
+Das Projekt `eBGS` wird als alternativen Lösungsansatz zum  
+`r r6ob_abbrtable$add_abbrev(psAbbrev = "ATDA-ASR", psMeaning = "Projekt zum automatisierten Tierdatenaustausch der ASR", pbQuote=FALSE)`
+bezeichnet. Im Gegensatz zum Projekt `ATDA-ASR`, in welchem der Datenaustausch automatisch ablaufen soll, werden im Projekt `eBGS` die Daten "halbautomatisch" vom Betrieb zu
+`r r6ob_abbrtable$add_abbrev(psAbbrev = "ARGUS", psMeaning = "Informationssystem der Zuchtorganisationen")`
+übermittelt werden. Gemäss sla soll dieses Projekt `eBGS` parallel zum Projekt `ATDA-ASR` entwickelt werden.
+
+### Alternativer Lösungsansatz mit Onlinetool "elektronischer BGS"
+{Der folgende Abschnitt ist in der Projektbeschreibung zwischen den Punkten "Ablauf" und "Detail Ablauf". Da das Onlinetool aber zentral ist, wurde die Beschreibung in dieser Zusammenfassung vorgezogen}
+
+Der Kern dieses Lösungsansatzes ist das Onlinetool. Dieses soll ähnlich aufgebaut sein, wie die MLP Begleitscheinerfassung. 
+
+{In der Projektbeschreibung ist ein Screenshot der Begleitscheinerfassung eingefügt. Das zentrale Element im vorgestellten Lösungsansatz ist das Onlinetool "elektronischer BGS". Dieses Tool wird vom Kontrolleur (und offenbar auch vom Betriebsleiter) verwendet um die erhobenen Daten zu ergänzen und in ARGUS zu importieren. Diese Konstallation hat einige Konsequenzen, welche im Abschnitt Kommentare noch erläutert werden.}
+
+Der halbautomatische Lösungsansatz soll gemäss Projektbeschreibung folgende Vorteile aufweisen.
+
+-	Ablauf absolut papierlos
+-	Funktioniert für alle Melkmaschinensysteme, die einen Export von Milchleistungsdaten erlauben
+-	Unabhängig vom Internet
+-	Programmtechnisch einfach umzusetzen
+-	Er kann erweitert werden für die Milchleistungsdaten Erfassung der Milchkontrolleure mit einem Tablet (papierlos auch in Anbindeställen). {Aufgrund des letzten Abschnittes in der Projektbeschreibung, ist hier gemeint, dass der hier vorgestellte Lösungsansatz erweitert werden kann. Eine mögliche Erweiterung wäre die Erfassung der Milchleistungsdaten durch die Kontrolleure mit einem mobilen Gerät(Tablet oder Smartphone).}
+
+Der __Ablauf__ der Milchkontrolle aus Sicht des Kontrolleurs würde wie folgt aussehen.
+
+1. Druck und Versand der Laboretiketten an Milchkontrolleur
+2. Durchführen der Milchkontrolle
+    a. Probenahme
+    b. Export der Milchmengendaten aus dem Melksystem in eine Datei
+    c. Upload der Milchmengendatei in ein Onlinetool durch Milchkontrolleur/Betriebsleiter oder manuelle Eingabe der Milchleistung.
+    d. Transfer und Verarbeitung der Milchmengendatei ins Onlinetool. 
+    e. Bearbeitung der Milchmengendaten im Onlinetool durch Milchkontrolleur
+    f. Einsenden der Proben
+3. Transfer Daten vom Onlinetool in Argus
+    a.Ab hier läuft es wie gewohnt, da die Daten vom Onlinetool im selben Format wie vom Scanning in Argus transferiert werden.
+
+{Bei den Punkten c. und d. ist mir der Ablauf unklar. Ich verstehe den Unterschied zwischen "Upload" der Daten ins Onlinetool und "Transfer" der Daten ins Onlinetool nicht.}
+
+
+__Detaillierter Ablauf__
+
+- Laboretiketten werden gedruckt und an Milchkontrolleure versendet
+- Für zugekaufte Kühe oder `r r6ob_abbrtable$add_abbrev(psAbbrev = "NH", psMeaning = "Nicht Herdebuch")`-Proben (d.h. für alle Proben, für welche keine Etiketten gedruckt wurden) werden eindeutig nummerierte Etiketten verwendet. Diese nummerierten Etiketten werden im Onlinetool manuell der Kuh zugeordnet.
+- Gleichzeitig werden diese Daten zum Onlinetool transferiert. 
+- Im Onlinetool wird eine ähnliche Ansicht wie bei der Begleitscheinerfassung erstellt
+- Milchkontrolleur hat in diesem Tool Zugriff zu allen Begleitscheinerfassungen seiner Betriebe
+
+
+__Durchführung der Milchkontrolle__
+
+a. Auf Betrieben, welche die Milchleistungsdaten in einem Informationssystem dauerhaft gespeichert haben, muss der Kontrolleur nur die Milchprobenflaschen mit den entsprechenden Etiketten bekleben. Bei den Proben, für welche keine vorgedruckten Etiketten vorhanden sind, werden eindeutig numerierte Etiketten verwendet. {Hier wird nicht mehr beschrieben, wie die Zuordnung der numerierten Etiketten zu den jeweiligen Tier-Nummern geschieht. Beim detaillierten Ablauf wurde erwähnt, dass diese Zuordnung im Onlinetool manuell gemacht wird.} Bei Betrieben ohne Speicherung der Milchleistungsdaten müssen die diese auf ein Formular übertragen werden. {Dies entspricht der aktuellen Prozedur}
+b. Der Datenexport wird von Landwirt gemacht. Die Daten werden per Email oder USB-Stick dem Milchkontrolleur zugestellt. {Hier ist nicht klar, welcher Datenexport gemeint ist. Handelt es sich hier um den Datenexport aus dem Melksystem oder den Export aus dem Onlinetool?}
+c. Der Milchkontrolleur loggt sich im Onlinetool ein und wählt den Betrieb aus. Er kann dort den Datenexport uploaden. Das Onlinetool kann ein von allen Melkmaschinenanbietern unterstütztes Format verarbeiten. Falls nötig, können mehrere Formate unterstützt werden. Der Aufwand ist geringer als die Einigung auf ein gemeinsames Format. {Aufgrund der Formulierung ist nicht ganz klar, wo das Einloggen des Milchkontrolleurs ins Onlinetool geschehen soll, ob auf dem Betrieb oder beim Milchkontrolleur zuhause.}
+d. Daten werden verarbeitet und Milchleistungsdaten und Kalbedaten werden dem elektronischen MLP Begleitschein zugeordnet. Bei Betrieben ohne elektronischen Datenexport müssen Daten manuell übertragen werden
+e. Milchkontrolleur hat die Möglichkeit optionale Eingaben zu machen (Probedatum, Bestellung Laborflaschen, Angabe Kurier, Anmeldungen zu LBE, MBK, Fertalys, MID, Setzen von Codes, Saugverhalten, Zuweisung von numerierten Etiketten zu Kühen, Einsenden der Probe) {Da die Zuordnung der numerierten Etiketten zu den Kühen hier erwähnt wird, müssten die hier beschriebenen Schritte eigentlich noch auf dem Betrieb gemacht werden.}
+
+
+__Transfer Daten vom Onlinetool zu ARGUS__
+
+Die Daten werden vom Onlinetool verarbeitet und in ähnlicher Form wie vom Scanner zu ARGUS transferiert. {Die anschliessende Verarbeitung läuft wie bisher ab.}
+
+### Weiterentwicklung
+- App für Milchkontrolleure. Das Onlinetool kann durch eine App (für mobile Geräte) erweitert werden
+- B Kontrolle. Betriebsleiter kann über dieses Tool eine mögliche B-Kontrolle durchführen
+- Weitere Ideen. Fotos der BGS als Beleg an ARGUS übertragen. Scannen von Etiketten per Kamera. Plausibilisierung bereits bei der Erfassung
+
+
+## Fragen und Kommentare
+1. __Projektidee__: Die Idee, dass manuelle Erfassungsschritte immer mehr durch automatisierte Prozesse ersetzt werden, ist sehr positiv.
+2. __Vorteile__: Aufgrund der vorliegenden Beschreibung sind die Vorteile der __Papierlosigkeit__ und des Funktionierens __ohne Internet__ in dieser Absolutheit nicht haltbar. Ob der vorgeschlagene Lösungsansatz papierlos und ohne Internetanschluss betrieben werden kann, ist abhängig davon, wo das Onlinetool läuft. Für die Übertragung der Daten vom Onlinetool zu ARGUS ist eine Anbindung ans Internet erforderlich, ob dieser auf dem Betrieb oder beim Milchkontrolleur existiert, scheint an dieser Stelle nicht zentral zu sein. Falls die Datenübertragung über den Milchkontrolleur laufen soll, müsste noch überprüft werden, wie viele der Kontrolleure einen Zugang zum Internet haben.
+3. __Ablauf__: In den Beschreibungen des Ablaufs einer Milchkontrolle existieren noch unbeantwortete Fragen. Im Abschnitt `Ablauf aus Sicht Milchkontrolleur` wird beschrieben, dass die Milchmengendaten aus dem Melksystem in eine Datei exportiert werden. Dies muss klar auf dem Rechner des Melksystems gemacht werden. Der nächste Schritt besteht aus dem Upload der Milchmengendatei in das Onlinetool. Es wird hier aber nicht gesagt, ob das auf dem Rechner des Melksystems passiert oder auf dem Rechner des Milchkontrolleurs. Da im Abschnitt `Detail Ablauf` erwäht wird, dass die Proben ohne vorgedruckte Etiketten im Onlinetool den entsprechenden Tiernummern zugeordnet werden, muss dieser erste Upload also auf dem Rechner des Melksystems passieren. Beim Datentransfer wird beschrieben, dass die Daten per USB-Stick oder Email dem Milchkontrolleur zugestellt werden. Somit müssen also nach dem Upload der Daten ins Onlinetool auf dem Betrieb die Daten dort exportiert werden und der so erstellte Datenexport wird nachher an den Milchkontrolleur übermittelt. Auf dem Rechner des Milchkontrolleurs werden die übermittelten Daten wieder ins Onlinetool eingelesen und dann von dort zu ARGUS übermittelt. Zusammenfassend kann man sagen, dass der Ablauf aus sehr vielen manuellen Schritten besteht, welche entweder der Betriebsleiter oder der Milchkontrolleur am Rechner erledigen müssen. Grundsätzlich sind manuelle Schritte fehleranfällig und nur schwer standardisierbar. Die im Vergleich zum heutigen Ablauf der Milchkontrolle zusätzlichen oder geänderten Aufgaben für Betriebsleiter und Milchkontrolleure müssten auch geschult werden, was mit einem erheblichen Zusatzaufwand verbunden wäre.
+4. __Weiterentwicklung__: Die Ideen hinter den Punkten im Abschnitt `Weiterentwicklung` sind alle gut. Aus meiner Sicht sind das aber Folgeprojekte, welche auf dem Automatisierten Tierdatenaustausch aufbauen sollen. Die Erweiterung des Onlinetools von einem Desktop-Rechner (PC oder Mac) auf ein mobiles Gerät unter der Annahme, dass kein Internetanschluss vorhanden ist, ist eine nicht triviale Aufgabe und bedeutet einen substantiellen Aufwand. Die Desktop-Variante des Onlinetools ist als solche nicht per-se auf mobilen Geräten lauffähig. Das Onlinetool müsste somit als eigenständige Applikation auf die jeweiligen Betriebssysteme der mobilien Geräte (Android, iOS oder Windows Mobile) übertragen werden.
+
+
+## Anforderungen
+{In diesem Abschnitt fassen wir die Anforderungen zusammen, welche nicht explizit in der Projektbeschreibung stehen, welche aber aufgrund der vorliegenden Projektbeschreibung abgeleitet werden können. Bei der Ableitung der Anforderungen wird von drei Szenarien unterschieden.}
+
+### Szenarium 1: Weder Betrieb noch Milchkontrolleur haben Internetanschluss
+Bei diesem Szenarium gibt es keine Möglichkeit die Milchleistungsdaten vom Betrieb oder vom Milchkontrolleur her zu ARGUS automatisiert zu übermitteln. In diesem Szenarium wird die Milchkontrolle weiterhin nach der bestehenden Prozedur mit dem BGS auf Papier durchgeführt werden.
+
+### Szenarium 2: Nur der Milchkontrolleur hat einen Internetanschluss
+```{r AbbrevMKLW}
+r6ob_abbrtable$add_abbrev(psAbbrev = "MK", psMeaning = "Milchkontrolleur", pbQuote=FALSE, pbOut=FALSE)
+r6ob_abbrtable$add_abbrev(psAbbrev = "LW", psMeaning = "Landwirt", pbQuote=FALSE, pbOut=FALSE)
+```
+
+```{r NurMkHatIa}
+rmddochelper::insertOdgAsPdf(psOdgFileStem = "NurMkHatIa")
+```
+
+Im Projekt `eBGS` können in diesem Szenarium Betriebe, welche die Milchleistungsdaten dauerhaft speichern, aber keinen Internetanschluss haben, von einem automatisierten Datenaustausch profitieren. Im Gegensatz dazu müssten diese Betriebe im Projekt `ATDA-ASR` immer noch mit der aktuellen Prozedur der manuellen Datenübertragung via BGS auf Papier ihre Milchleistungsdaten übermitteln.
+
+Es bleibt abzuklären, wie häufig dieses Szenarium in der Praxis anzutreffen ist. Die Anforderungen bestehen darin, dass der Milchkontrolleur einen Internetanschluss hat. Sowohl auf dem Desktop-Rechner des Betriebs, wie auch auf dem Desktop-Rechner des Milchkontrolleurs muss das Onlinetool installiert sein. Auf dem Betrieb muss das Onlinetool als stand-alone Programm, d.h. als autonom lauffähiges Programm betrieben werden können. Beim Milchkontrolleur muss das Onlinetool die Möglichkeit bieten eine Verbindung zu ARGUS aufzubauen um dann die Milchleistungsdaten zu übermitteln. Da auf dem Betrieb kein Internetanschluss besteht, stellt sich das Problem, wie die Version des Onlinetools auf dem Betrieb gewartet wird, d.h., wie Updates des Onlinetools auf dem Desktop-Rechner des Betriebs eingespielt würden.
+
+Betrachtet man den Fluss der Milchleistungsdaten vom Betrieb bis hin zu ARGUS, machen die Daten einen Umweg über den Desktop-Rechner des Milchkontrolleurs. 
+
+### Szenarium 3: Betrieb hat einen Internetanschluss
+```{r LwHatIa}
+rmddochelper::insertOdgAsPdf(psOdgFileStem = "LwHatIa")
+```
+
+Sofern auf dem Betrieb ein Internetanschluss vorhanden ist, dann können die Daten im Onlinetool auf dem Betrieb bearbeitet werden und von da direkt zu ARGUS übertragen werden. Hier fallen die Anforderungen an die Ausrüstung beim Milchkontrolleur weg. Dieses Szenarium entspricht eigentlich einer manuellen Variante der Lösung, welche in `ATDA-ASR` angestrebt wird. Im Vergleich zum automatisierten Export bedeutet diese manuelle Variante aber einen Mehraufwand. Es müssen nämlich im Gegensatz zu den in `ATDA-ASR` verwendeten Plug-In Programmen, welche den Datenexport automatisch machen, die zusätzliche Ansicht analog zur Begleitschein-Erfassungsmaske erstellt werden. 
+
+Die Möglichkeit einer manuellen Bearbeitung von gewissen Daten wären auch in `ATDA-ASR` eine angenehme Erweiterung der Funktionalität. Eine solche Erweiterung würde aber nicht in der ersten Version realisiert werden können.
+
+Die halbautomatische Übertragung der Daten in `eBGS` via das Onlinetool bringt eine Verbesserung gegenüber des BGS auf Papier. Im Vergleich zur automatisierten Lösung in `ATDA-ASR` ist die halbautomatische Übertragung in `eBGS` fehleranfällig und aufwändiger in der Umsetzung.
+
+
+
+<!-- END of document:  Below this must not be anything, except the command to write all abbreviations to a file --> 
+```{r WriteTableOfAbbreviations, results='hide'}
+if (!r6ob_abbrtable$is_empty_abbr())
+  r6ob_abbrtable$writeToTsvFile()
+```
+
+\pagebreak
+
+```{r IncludeAbrTable}
+r6ob_abbrtable$include_abbr_table(psAbbrTitle = "## Abkürzungen")
+```
+
+
+
+
+
+
