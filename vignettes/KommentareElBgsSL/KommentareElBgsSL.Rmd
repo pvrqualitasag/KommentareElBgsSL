@@ -74,7 +74,9 @@ r6obj_docstat <- rmddochelper::R6ClassDocuStatus$new()
 r6obj_docstat$set_current_status(psVersion = "0.0.901",
                                  psStatus  = "Erstellung",
                                  psProject = "eBgs")
-
+r6obj_docstat$set_current_status(psVersion = "0.0.902",
+                                 psStatus  = "Korrektur und Revision",
+                                 psProject = "eBgs")
 r6obj_docstat$include_doc_stat(psTitle = "## Status des Dokuments")
 ```
 
@@ -84,7 +86,7 @@ r6obj_docstat$include_doc_stat(psTitle = "## Status des Dokuments")
 ## Erklärung
 Dieses Dokument ist eine Sammlung von Kommentaren zum Entwurf des Projekts `r r6ob_abbrtable$add_abbrev(psAbbrev = "eBGS", psMeaning = "elektronischer Begleitschein")`  von `r r6ob_abbrtable$add_abbrev(psAbbrev = "sla", psMeaning = "Simon Langenegger")`. Die Kommentare basieren auf der Version der Projektbeschreibung, welche am 18.07.2016 von sla versendet wurde und mir von `r r6ob_abbrtable$add_abbrev(psAbbrev = "sgo", psMeaning = "Sarah Görlich")` weitergeleitet wurde.
 
-In einem ersten Abschnitt fasse ich das Projekt von sla zusammen, so wie ich das verstanden habe. Anschliessend werde ich meine Fragen und Kommentare formulieren.
+In einem ersten Abschnitt fasse ich das Projekt von sla zusammen, so wie ich es aufgrund der vorhandenen Dokumentation  verstanden habe. Anschliessend werde ich meine Fragen und Kommentare formulieren.
 
 Zusätzliche Erklärungen werden in geschweifte Klammern {} gesetzt.
 
@@ -97,14 +99,10 @@ Das Projekt trägt den Titel `Alternativer Lösungsansatz für Automatisierte Da
 r6ob_abbrtable$add_abbrev(psAbbrev = "ASR", psMeaning = "Arbeitsgemeinschaft Schweizerischer Rinderzüchter", pbQuote=FALSE, pbOut=FALSE)
 ```
 
-Das Projekt `eBGS` wird als alternativen Lösungsansatz zum  
-`r r6ob_abbrtable$add_abbrev(psAbbrev = "ATDA-ASR", psMeaning = "Projekt zum automatisierten Tierdatenaustausch der ASR", pbQuote=FALSE)`
-bezeichnet. Im Gegensatz zum Projekt `ATDA-ASR`, in welchem der Datenaustausch automatisch ablaufen soll, werden im Projekt `eBGS` die Daten "halbautomatisch" vom Betrieb zu
-`r r6ob_abbrtable$add_abbrev(psAbbrev = "ARGUS", psMeaning = "Informationssystem der Zuchtorganisationen")`
-übermittelt werden. Gemäss sla soll dieses Projekt `eBGS` parallel zum Projekt `ATDA-ASR` entwickelt werden.
+Das Projekt `eBGS` wird als alternativen Lösungsansatz zum `r r6ob_abbrtable$add_abbrev(psAbbrev = "ATDA-ASR", psMeaning = "Projekt zum automatisierten Tierdatenaustausch der ASR", pbQuote=FALSE)` bezeichnet. Im Gegensatz zum Projekt `ATDA-ASR`, in welchem der Datenaustausch automatisch ablaufen soll, werden im Projekt `eBGS` die Daten "halbautomatisch" vom Betrieb zu `r r6ob_abbrtable$add_abbrev(psAbbrev = "ARGUS", psMeaning = "Informationssystem der Zuchtorganisationen")` übermittelt werden. Gemäss sla soll dieses Projekt `eBGS` parallel zum Projekt `ATDA-ASR` entwickelt werden.
 
 ### Alternativer Lösungsansatz mit Onlinetool "elektronischer BGS"
-{Der folgende Abschnitt ist in der Projektbeschreibung zwischen den Punkten "Ablauf" und "Detail Ablauf". Da das Onlinetool aber zentral ist, wurde die Beschreibung in dieser Zusammenfassung vorgezogen}
+{Im folgenden wird die Beschreibung zum Onlinetool vorgezogen, da dieses zentral ist für das Projekt `eBGS`. Die Unterabschnitte `Ablauf aus Sicht Milchkontrolleur` und `Detail Ablauf` werden später zusammengefasst.}
 
 Der Kern dieses Lösungsansatzes ist das Onlinetool. Dieses soll ähnlich aufgebaut sein, wie die MLP Begleitscheinerfassung. 
 
@@ -129,9 +127,9 @@ Der __Ablauf__ der Milchkontrolle aus Sicht des Kontrolleurs würde wie folgt au
     e. Bearbeitung der Milchmengendaten im Onlinetool durch Milchkontrolleur
     f. Einsenden der Proben
 3. Transfer Daten vom Onlinetool in Argus
-    a.Ab hier läuft es wie gewohnt, da die Daten vom Onlinetool im selben Format wie vom Scanning in Argus transferiert werden.
+    a. Ab hier läuft es wie gewohnt, da die Daten vom Onlinetool im selben Format wie vom Scanning in Argus transferiert werden.
 
-{Bei den Punkten c. und d. ist mir der Ablauf unklar. Ich verstehe den Unterschied zwischen "Upload" der Daten ins Onlinetool und "Transfer" der Daten ins Onlinetool nicht.}
+{Bei den Punkten 2c und 2d ist mir der Ablauf unklar. Ich verstehe den Unterschied zwischen "Upload" der Daten ins Onlinetool und "Transfer" der Daten ins Onlinetool nicht.}
 
 
 __Detaillierter Ablauf__
@@ -206,8 +204,10 @@ Die halbautomatische Übertragung der Daten in `eBGS` via das Onlinetool bringt 
 
 <!-- END of document:  Below this must not be anything, except the command to write all abbreviations to a file --> 
 ```{r WriteTableOfAbbreviations, results='hide'}
-if (!r6ob_abbrtable$is_empty_abbr())
+if (!r6ob_abbrtable$is_empty_abbr()){
+  r6ob_abbrtable$setColHeader(pvColHeader = c("Abkürzung", "Bedeutung"))
   r6ob_abbrtable$writeToTsvFile()
+}
 ```
 
 \pagebreak
